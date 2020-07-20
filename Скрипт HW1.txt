@@ -1,0 +1,52 @@
+CREATE TABLE IF NOT EXISTS `mydb`.`countries` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`regions` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `id_country` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `id_country_idx` (`id_country` ASC) VISIBLE,
+  CONSTRAINT `id_country`
+    FOREIGN KEY (`id_country`)
+    REFERENCES `mydb`.`countries` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB
+;
+CREATE TABLE IF NOT EXISTS `mydb`.`districts` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `id_region` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `id_region_idx` (`id_region` ASC) VISIBLE,
+  CONSTRAINT `id_region`
+    FOREIGN KEY (`id_region`)
+    REFERENCES `mydb`.`regions` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB
+;
+CREATE TABLE IF NOT EXISTS `mydb`.`cities` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NULL,
+  `id_region` INT NULL,
+  `id_district` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `id_district_idx` (`id_district` ASC) VISIBLE,
+  INDEX `id_region_idx` (`id_region` ASC) VISIBLE,
+  CONSTRAINT `id_district`
+    FOREIGN KEY (`id_district`)
+    REFERENCES `mydb`.`districts` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT,
+  CONSTRAINT `id_region`
+    FOREIGN KEY (`id_region`)
+    REFERENCES `mydb`.`regions` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
+ENGINE = InnoDB
