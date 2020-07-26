@@ -1,0 +1,53 @@
+1
+
+select  departments.dept_name, avg(salaries.salary) from dept_emp as dept_emp
+left join departments as departments on dept_emp.dept_no = departments.dept_no
+left join salaries as salaries on dept_emp.emp_no = salaries.emp_no
+group by departments.dept_name
+
+2
+
+SELECT cities.title, regions.title   FROM _cities as cities
+inner join _regions as regions on cities.region_id = regions.id and regions.id = 1053480
+;
+
+
+3
+
+select  departments.dept_name, avg(salaries.salary) from dept_emp as dept_emp
+left join departments as departments on dept_emp.dept_no = departments.dept_no
+left join salaries as salaries on dept_emp.emp_no = salaries.emp_no
+group by departments.dept_name
+
+4
+
+select  first_name,last_name , MAX(salary)  from employees
+left join salaries s on employees.emp_no = s.emp_no
+GROUP BY first_name,last_name
+
+5
+
+delete employees.* from employees
+inner join
+(select employees.emp_no as emp_no from employees
+left join salaries s on employees.emp_no = s.emp_no
+order by s.salary desc
+limit 1) as e
+on employees.emp_no = e.emp_no
+
+6
+
+select d.dept_name, count(de.emp_no) from dept_emp as de
+left join departments d on de.dept_no = d.dept_no
+GROUP BY d.dept_name
+
+7
+
+SELECT dept_name, dept_salary.salary, dept_emp.employees   from departments
+LEFT JOIN (select dept_no, sum(salary) as salary from dept_emp
+left join salaries s on dept_emp.emp_no = s.emp_no
+group by dept_no
+) as dept_salary on departments.dept_no = dept_salary.dept_no
+left join (select de.dept_no, count(de.emp_no) as employees from dept_emp as de
+GROUP BY de.dept_no) as dept_emp on departments.dept_no = dept_emp.dept_no
+
