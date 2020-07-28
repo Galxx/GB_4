@@ -1,0 +1,44 @@
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `view_1` AS
+    SELECT 
+        `departments`.`dept_name` AS `dept_name`,
+        AVG(`salaries`.`salary`) AS `avg(salaries.salary)`
+    FROM
+        ((`dept_emp`
+        LEFT JOIN `departments` ON ((`dept_emp`.`dept_no` = `departments`.`dept_no`)))
+        LEFT JOIN `salaries` ON ((`dept_emp`.`emp_no` = `salaries`.`emp_no`)))
+    GROUP BY `departments`.`dept_name`
+
+;
+
+USE `employees`;
+DROP function IF EXISTS `function_2`;
+
+DELIMITER $$
+USE `employees`$$
+CREATE FUNCTION `function_2` (first_name char(14), last_name char(16)) RETURNS integer DETERMINISTIC
+BEGIN	
+   DECLARE ID_FOUND integer;
+   
+   SELECT MAX(employees.emp_no) INTO ID_FOUND FROM employees.employees AS employees
+   WHERE employees.first_name = first_name AND employees.last_name = last_name;
+    
+RETURN ID_FOUND;
+END;$$
+
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS `employees`.`employees_AFTER_INSERT`;
+
+DELIMITER $$
+USE `employees`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `employees`.`employees_AFTER_INSERT` AFTER INSERT ON `employees` FOR EACH ROW
+BEGIN
+INSERT INTO `employees`.`salaries` (`emp_no`, `salary`, `from_date`, `to_date`) VALUES (NEW.emp_no, '10', '2020-12-12', '2020-12-13');
+END$$
+DELIMITER ;   
+
+
