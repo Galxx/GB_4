@@ -1,0 +1,13 @@
+//Премия, когда сотрудник становится менеджером
+
+SET AUTOCOMMIT = 0;
+
+START TRANSACTION;
+
+ INSERT INTO `employees`.`dept_manager` (`dept_no`, `emp_no`, `from_date`, `to_date`) VALUES ('d005', ('10101', '2020-07-01', '2020-07-31');
+
+ INSERT INTO `employees`.`salaries` (`emp_no`, `salary`, `from_date`, `to_date`) VALUES ('10101', '10', '2020-07-01', '2020-07-31');
+
+COMMIT;
+
+ 
